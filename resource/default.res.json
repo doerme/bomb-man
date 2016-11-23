@@ -1,23 +1,50 @@
 {
-	"groups":[
-	{
-		"keys":"bg_jpg,egret_icon_png,description_json",
-		"name":"preload"
-	}],
-	"resources":[
-	{
-		"name":"bg_jpg",
-		"type":"image",
-		"url":"assets/bg.jpg"
-	},
-	{
-		"name":"egret_icon_png",
-		"type":"image",
-		"url":"assets/egret_icon.png"
-	},
-	{
-		"name":"description_json",
-		"type":"json",
-		"url":"config/description.json"
-	}]
+	"groups": [
+		{
+			"keys": "bg_jpg,egret_icon_png,description_json,big-fire_png,bomb_png,fire_png,map_png,mine_png",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"name": "bg_jpg",
+			"type": "image",
+			"url": "assets/bg.jpg"
+		},
+		{
+			"name": "egret_icon_png",
+			"type": "image",
+			"url": "assets/egret_icon.png"
+		},
+		{
+			"name": "description_json",
+			"type": "json",
+			"url": "config/description.json"
+		},
+		{
+			"name": "big-fire_png",
+			"type": "image",
+			"url": "assets/big-fire.png"
+		},
+		{
+			"name": "bomb_png",
+			"type": "image",
+			"url": "assets/bomb.png"
+		},
+		{
+			"name": "fire_png",
+			"type": "image",
+			"url": "assets/fire.png"
+		},
+		{
+			"name": "map_png",
+			"type": "image",
+			"url": "assets/map.png"
+		},
+		{
+			"name": "mine_png",
+			"type": "image",
+			"url": "assets/mine.png"
+		}
+	]
 }
