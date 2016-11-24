@@ -30,6 +30,8 @@ var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
         _super.call(this);
+        this._touchStatus = false; //当前触摸状态，按下时，值为true
+        this._distance = new egret.Point(); //鼠标点击时，鼠标全局坐标与_bird的位置差
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
     var d = __define,c=Main,p=c.prototype;
@@ -101,97 +103,98 @@ var Main = (function (_super) {
      * Create a game scene
      */
     p.createGameScene = function () {
-        var sky = this.createBitmapByName("bg_jpg");
-        this.addChild(sky);
-        var stageW = this.stage.stageWidth;
-        var stageH = this.stage.stageHeight;
-        sky.width = stageW;
-        sky.height = stageH;
-        var topMask = new egret.Shape();
-        topMask.graphics.beginFill(0x000000, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW, 172);
-        topMask.graphics.endFill();
-        topMask.y = 33;
-        this.addChild(topMask);
-        var icon = this.createBitmapByName("egret_icon_png");
-        this.addChild(icon);
-        icon.x = 26;
-        icon.y = 33;
-        var line = new egret.Shape();
-        line.graphics.lineStyle(2, 0xffffff);
-        line.graphics.moveTo(0, 0);
-        line.graphics.lineTo(0, 117);
-        line.graphics.endFill();
-        line.x = 172;
-        line.y = 61;
-        this.addChild(line);
-        var colorLabel = new egret.TextField();
-        colorLabel.textColor = 0xffffff;
-        colorLabel.width = stageW - 172;
-        colorLabel.textAlign = "center";
-        colorLabel.text = "Hello Egret";
-        colorLabel.size = 24;
-        colorLabel.x = 172;
-        colorLabel.y = 80;
-        this.addChild(colorLabel);
-        var textfield = new egret.TextField();
-        this.addChild(textfield);
-        textfield.alpha = 0;
-        textfield.width = stageW - 172;
-        textfield.textAlign = egret.HorizontalAlign.CENTER;
-        textfield.size = 24;
-        textfield.textColor = 0xffffff;
-        textfield.x = 172;
-        textfield.y = 135;
-        this.textfield = textfield;
-        //根据name关键字，异步获取一个json配置文件，name属性请参考resources/resource.json配置文件的内容。
-        // Get asynchronously a json configuration file according to name keyword. As for the property of name please refer to the configuration file of resources/resource.json.
-        RES.getResAsync("description_json", this.startAnimation, this);
+        this.createGameBackground();
+        this.createCtrlLever();
     };
     /**
-     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
-     * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
+     * 游戏背景
      */
-    p.createBitmapByName = function (name) {
-        var result = new egret.Bitmap();
-        var texture = RES.getRes(name);
-        result.texture = texture;
-        return result;
+    p.createGameBackground = function () {
+        var img = new egret.Bitmap();
+        img.texture = RES.getRes("map_png");
+        img.fillMode = egret.BitmapFillMode.REPEAT;
+        img.width = 750;
+        img.height = 750;
+        this.addChild(img);
     };
     /**
-     * 描述文件加载成功，开始播放动画
-     * Description file loading is successful, start to play the animation
+     * 游戏操控台
      */
-    p.startAnimation = function (result) {
-        var self = this;
-        var parser = new egret.HtmlTextParser();
-        var textflowArr = [];
-        for (var i = 0; i < result.length; i++) {
-            textflowArr.push(parser.parser(result[i]));
-        }
-        var textfield = self.textfield;
-        var count = -1;
-        var change = function () {
-            count++;
-            if (count >= textflowArr.length) {
-                count = 0;
+    p.createCtrlLever = function () {
+        var ctrlLever = new egret.Shape();
+        ctrlLever.x = 150;
+        ctrlLever.y = 900;
+        ctrlLever.graphics.beginFill(0xdddddd, 1);
+        ctrlLever.graphics.drawCircle(0, 0, 100);
+        ctrlLever.graphics.endFill();
+        //触碰事件绑定
+        ctrlLever.touchEnabled = true;
+        ctrlLever.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchStart, this);
+        ctrlLever.addEventListener(egret.TouchEvent.TOUCH_END, this.touchEnd, this);
+        this.addChild(ctrlLever);
+        this._ctrlGuide = new egret.Shape();
+        this._ctrlGuide.x = 150;
+        this._ctrlGuide.y = 900;
+        this._ctrlGuide.graphics.beginFill(0x2b96e1, 1);
+        this._ctrlGuide.graphics.drawCircle(0, 0, 50);
+        this._ctrlGuide.graphics.endFill();
+        this.addChild(this._ctrlGuide);
+    };
+    /**
+     * 游戏操控
+     */
+    p.touchStart = function (evt) {
+        console.log("touchStart");
+        this._touchStatus = true;
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchMove, this);
+    };
+    /**
+     * 游戏操控
+     */
+    p.touchEnd = function (evt) {
+    };
+    /**
+     * 游戏操控
+     */
+    p.touchMove = function (evt) {
+        if (this._touchStatus) {
+            //控制台中心坐标
+            var roundX = 150;
+            var roundY = 900;
+            //半径
+            var roundR = 100;
+            //外点
+            var rsX = evt.stageX;
+            var rsY = evt.stageY;
+            var anX = rsX;
+            var anY = rsY;
+            //两点之间的距离
+            var distance = Math.sqrt(Math.pow((roundX - rsX), 2) + Math.pow((roundY - rsY), 2));
+            if (distance > roundR) {
+                /*第一象限*/
+                if (rsX > roundX && rsY < roundY) {
+                    anX = roundX + (rsX - roundX) * 100 / distance;
+                    anY = roundY + (rsY - roundY) * 100 / distance;
+                }
+                /*第二象限*/
+                if (rsX < roundX && rsY < roundY) {
+                    anX = roundX - (roundX - rsX) * 100 / distance;
+                    anY = roundY + (rsY - roundY) * 100 / distance;
+                }
+                /*第三象限*/
+                if (rsX < roundX && rsY > roundY) {
+                    anX = roundX - (roundX - rsX) * 100 / distance;
+                    anY = roundY + (rsY - roundY) * 100 / distance;
+                }
+                /*第四象限*/
+                if (rsX > roundX && rsY > roundY) {
+                    anX = roundX + (rsX - roundX) * 100 / distance;
+                    anY = roundY + (rsY - roundY) * 100 / distance;
+                }
             }
-            var lineArr = textflowArr[count];
-            self.changeDescription(textfield, lineArr);
-            var tw = egret.Tween.get(textfield);
-            tw.to({ "alpha": 1 }, 200);
-            tw.wait(2000);
-            tw.to({ "alpha": 0 }, 200);
-            tw.call(change, self);
-        };
-        change();
-    };
-    /**
-     * 切换描述内容
-     * Switch to described content
-     */
-    p.changeDescription = function (textfield, textFlow) {
-        textfield.textFlow = textFlow;
+            this._ctrlGuide.x = anX;
+            this._ctrlGuide.y = anY;
+        }
     };
     return Main;
 }(egret.DisplayObjectContainer));
