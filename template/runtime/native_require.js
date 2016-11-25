@@ -10,6 +10,11 @@ var game_file_list = [
 	"libs/modules/tween/tween.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
+	"bin-debug/material/BgMap.js",
+	"bin-debug/material/CtrlLever.js",
+	"bin-debug/material/GameContainer.js",
+	"bin-debug/material/GameWrap.js",
+	"bin-debug/material/Pumpkin.js",
 	//----auto game_file_list end----
 ];
 
@@ -44,7 +49,7 @@ egret_native.egretStart = function () {
         //----auto option start----
 		entryClassName: "Main",
 		frameRate: 30,
-		scaleMode: "showAll",
+		scaleMode: "fixedWidth",
 		contentWidth: 750,
 		contentHeight: 1334,
 		showPaintRect: false,

@@ -30,8 +30,6 @@ var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
         _super.call(this);
-        this._touchStatus = false; //当前触摸状态，按下时，值为true
-        this._distance = new egret.Point(); //鼠标点击时，鼠标全局坐标与_bird的位置差
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
     var d = __define,c=Main,p=c.prototype;
@@ -103,8 +101,8 @@ var Main = (function (_super) {
      * Create a game scene
      */
     p.createGameScene = function () {
-        this.createGameBackground();
-        this.createCtrlLever();
+        var gameContainer = new material.GameContainer();
+        this.addChild(gameContainer);
     };
     /**
      * 游戏背景
@@ -116,85 +114,6 @@ var Main = (function (_super) {
         img.width = 750;
         img.height = 750;
         this.addChild(img);
-    };
-    /**
-     * 游戏操控台
-     */
-    p.createCtrlLever = function () {
-        var ctrlLever = new egret.Shape();
-        ctrlLever.x = 150;
-        ctrlLever.y = 900;
-        ctrlLever.graphics.beginFill(0xdddddd, 1);
-        ctrlLever.graphics.drawCircle(0, 0, 100);
-        ctrlLever.graphics.endFill();
-        //触碰事件绑定
-        ctrlLever.touchEnabled = true;
-        ctrlLever.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchStart, this);
-        ctrlLever.addEventListener(egret.TouchEvent.TOUCH_END, this.touchEnd, this);
-        this.addChild(ctrlLever);
-        this._ctrlGuide = new egret.Shape();
-        this._ctrlGuide.x = 150;
-        this._ctrlGuide.y = 900;
-        this._ctrlGuide.graphics.beginFill(0x2b96e1, 1);
-        this._ctrlGuide.graphics.drawCircle(0, 0, 50);
-        this._ctrlGuide.graphics.endFill();
-        this.addChild(this._ctrlGuide);
-    };
-    /**
-     * 游戏操控
-     */
-    p.touchStart = function (evt) {
-        console.log("touchStart");
-        this._touchStatus = true;
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.touchMove, this);
-    };
-    /**
-     * 游戏操控
-     */
-    p.touchEnd = function (evt) {
-    };
-    /**
-     * 游戏操控
-     */
-    p.touchMove = function (evt) {
-        if (this._touchStatus) {
-            //控制台中心坐标
-            var roundX = 150;
-            var roundY = 900;
-            //半径
-            var roundR = 100;
-            //外点
-            var rsX = evt.stageX;
-            var rsY = evt.stageY;
-            var anX = rsX;
-            var anY = rsY;
-            //两点之间的距离
-            var distance = Math.sqrt(Math.pow((roundX - rsX), 2) + Math.pow((roundY - rsY), 2));
-            if (distance > roundR) {
-                /*第一象限*/
-                if (rsX > roundX && rsY < roundY) {
-                    anX = roundX + (rsX - roundX) * 100 / distance;
-                    anY = roundY + (rsY - roundY) * 100 / distance;
-                }
-                /*第二象限*/
-                if (rsX < roundX && rsY < roundY) {
-                    anX = roundX - (roundX - rsX) * 100 / distance;
-                    anY = roundY + (rsY - roundY) * 100 / distance;
-                }
-                /*第三象限*/
-                if (rsX < roundX && rsY > roundY) {
-                    anX = roundX - (roundX - rsX) * 100 / distance;
-                    anY = roundY + (rsY - roundY) * 100 / distance;
-                }
-                /*第四象限*/
-                if (rsX > roundX && rsY > roundY) {
-                    anX = roundX + (rsX - roundX) * 100 / distance;
-                    anY = roundY + (rsY - roundY) * 100 / distance;
-                }
-            }
-            this._ctrlGuide.x = anX;
-            this._ctrlGuide.y = anY;
-        }
     };
     return Main;
 }(egret.DisplayObjectContainer));
