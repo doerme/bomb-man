@@ -20,8 +20,8 @@ module material
             img.texture = RES.getRes("mine_png");
             img.width = 120;
             img.height = 120;
-            img.x = this.stageW/2;
-            img.y = this.stageW/2;
+            img.x = this.stageW/2 - img.width / 2;
+            img.y = this.stageW/2 - img.height / 2;
             this.addChild(img);
         }
     }

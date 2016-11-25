@@ -144,9 +144,15 @@ module material
             //为了防止FPS下降造成回收慢，生成快，进而导致DRAW数量失控，需要计算一个系数，当FPS下降的时候，让运动速度加快
             var nowTime:number = egret.getTimer();
             var fps:number = 1000/(nowTime-this._lastTime);
+            var timeStamp:number = nowTime - this._lastTime;
             this._lastTime = nowTime;
             var speedOffset:number = 60/fps;
-            console.log(this._lastTime);
+            console.log(this._lastTime, timeStamp);
+        }
+
+        /**画南瓜 */
+        private drawPumpkin(timeStamp):void{
+
         }
 
     }
