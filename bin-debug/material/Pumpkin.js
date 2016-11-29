@@ -11,6 +11,7 @@ var material;
             this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
             this.stageW = this.stage.stageWidth;
             this.stageH = this.stage.stageHeight;
+            this.speed = 1;
             var img = new egret.Bitmap();
             img.texture = RES.getRes("mine_png");
             img.width = 120;

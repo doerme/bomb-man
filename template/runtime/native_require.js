@@ -15,6 +15,7 @@ var game_file_list = [
 	"bin-debug/material/GameContainer.js",
 	"bin-debug/material/GameWrap.js",
 	"bin-debug/material/Pumpkin.js",
+	"bin-debug/material/Shadow.js",
 	//----auto game_file_list end----
 ];
 
@@ -53,8 +54,8 @@ egret_native.egretStart = function () {
 		contentWidth: 750,
 		contentHeight: 1334,
 		showPaintRect: false,
-		showFPS: false,
-		fpsStyles: "x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.9",
+		showFPS: true,
+		fpsStyles: "x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.5",
 		showLog: false,
 		logFilter: "",
 		maxTouches: 2,

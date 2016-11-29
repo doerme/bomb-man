@@ -18,6 +18,9 @@ module material
         /**游戏控制杆 */
         private ctrlLever: material.CtrlLever;
 
+        /**阴影[] */
+        private shadow: material.Shadow[] = [];
+
         private _ctrlGuide:egret.Shape;                   //操控杆对象
         private _touchStatus:boolean = false;             //当前触摸状态，按下时，值为true
         /**@private*/
@@ -68,6 +71,7 @@ module material
             //猪脚
             this.pumpkin = new material.Pumpkin();
             this.addChild(this.pumpkin);
+            this.addChild(this.pumpkin.shadow);
         }
 
         /**
@@ -86,6 +90,8 @@ module material
         private touchEnd(evt:egret.TouchEvent){
             this._touchStatus = false;
             this._ctrlGuide.alpha = 0;
+            this.pumpkin.speedX = 0;
+            this.pumpkin.speedY = 0;
         }
 
         /**
@@ -131,6 +137,27 @@ module material
 
                 this._ctrlGuide.x = anX;
                 this._ctrlGuide.y = anY;
+
+                /*控制逻辑 第一象限*/
+                if(rsX > roundX && rsY < roundY){
+                    this.pumpkin.speedX = this.pumpkin.speed * (rsX - roundX) * 100 / distance;
+                    this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                }
+                /*第二象限*/
+                if(rsX < roundX && rsY < roundY){
+                    this.pumpkin.speedX = -this.pumpkin.speed * (roundX - rsX) * 100 / distance;
+                    this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                }
+                /*第三象限*/
+                if(rsX < roundX && rsY > roundY){
+                    this.pumpkin.speedX = -this.pumpkin.speed * (roundX - rsX) * 100 / distance;
+                    this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                }
+                /*第四象限*/
+                if(rsX > roundX && rsY > roundY){
+                    this.pumpkin.speedX = this.pumpkin.speed * (rsX - roundX) * 100 / distance;
+                    this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                }
             }
         }
 
@@ -147,12 +174,55 @@ module material
             var timeStamp:number = nowTime - this._lastTime;
             this._lastTime = nowTime;
             var speedOffset:number = 60/fps;
-            console.log(this._lastTime, timeStamp);
+            //console.log(this._lastTime, timeStamp);
+
+            this.drawPumpkin(timeStamp);
         }
 
         /**画南瓜 */
         private drawPumpkin(timeStamp):void{
+            if(timeStamp > 999){
+                return;
+            }
+        	var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
+                var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
 
+                this.pumpkin.x = this.pumpkin.x + _tmp_dx;
+                this.pumpkin.y = this.pumpkin.y + _tmp_dy;
+
+                console.log(this.pumpkin.x, this.pumpkin.y);
+
+                /*防撞墙*/
+                if(this.pumpkin.x < this.pumpkin.width/2 - this.stageW/2){
+                	this.pumpkin.x = this.pumpkin.width/2 - this.stageW/2;
+                }
+
+                if(this.pumpkin.y < this.pumpkin.height/2 - this.stageW/2){
+                	this.pumpkin.y = this.pumpkin.height/2 - this.stageW/2;
+                }
+
+                if(this.pumpkin.x > this.stageW/2 - this.pumpkin.width/2){
+                	this.pumpkin.x = this.stageW/2 - this.pumpkin.width/2;
+                }
+
+                if(this.pumpkin.y > this.stageW/2 - this.pumpkin.height/2){
+                	this.pumpkin.y = this.stageW/2 - this.pumpkin.height/2;
+                }
+
+                /*防撞墙end*/
+                
+                this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
+                
+
+                // if(this.pumpkin.speedX != 0 || this.pumpkin.speedY != 0){
+                // 	if(parseInt(this.pumpkin.walked) % 50 > 25){
+                // 		this.pumpkin.yoffset = 0;
+                // 	}else{
+                // 		this.pumpkin.yoffset = 10;
+                // 	}
+                // }else{
+                // 	this.pumpkin.yoffset = 10;
+                // }
         }
 
     }
