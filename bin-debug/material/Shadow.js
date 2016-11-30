@@ -28,4 +28,3 @@ var material;
     material.Shadow = Shadow;
     egret.registerClass(Shadow,'material.Shadow');
 })(material || (material = {}));
-//# sourceMappingURL=Shadow.js.map

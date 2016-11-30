@@ -71,6 +71,7 @@ var material;
             this._ctrlGuide.alpha = 0;
             this.pumpkin.speedX = 0;
             this.pumpkin.speedY = 0;
+            this.pumpkin.seStop();
         };
         /**
          * 游戏操控
@@ -194,4 +195,3 @@ var material;
     material.GameContainer = GameContainer;
     egret.registerClass(GameContainer,'material.GameContainer');
 })(material || (material = {}));
-//# sourceMappingURL=GameContainer.js.map

@@ -95,6 +95,7 @@ module material
             this._ctrlGuide.alpha = 0;
             this.pumpkin.speedX = 0;
             this.pumpkin.speedY = 0;
+            this.pumpkin.seStop();
         }
 
         /**

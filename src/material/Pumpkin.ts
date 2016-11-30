@@ -30,6 +30,7 @@ module material
         public offsetY:number;
 
         private runner:egret.MovieClip;
+        private runnerState:string;
 
 
         public constructor() {
@@ -46,21 +47,40 @@ module material
             var txtr = RES.getRes("cat_png");
             var mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
             this.runner = new egret.MovieClip( mcFactory.generateMovieClipData( "cat" ) );
-            this.setRunLeft();
+            this.runner.x = this.stageW/2 - this.runner.width/2;
+            this.runner.y = this.stageW/2 - this.runner.height/2;
+            this.seStop();
             this.addChild(this.runner);
-            this.runner.play(-1);
         }
 
         public setRunRight(){
+            if(this.runnerState == 'right'){
+                return;
+            }
+            this.runnerState = 'right';
             this.runner.x = this.stageW/2 - this.runner.width/2;
             this.runner.y = this.stageW/2 - this.runner.height/2;
             this.runner.scaleX = 1;
+            this.runner.gotoAndPlay("run", -1);
         }
 
         public setRunLeft(){
+            if(this.runnerState == 'left'){
+                return;
+            }
+            this.runnerState = 'left';
             this.runner.x = this.stageW/2 + this.runner.width/2;
             this.runner.y = this.stageW/2 - this.runner.height/2;
             this.runner.scaleX = -1;
+            this.runner.gotoAndPlay("run", -1);
+        }
+
+        public seStop(){
+            if(this.runnerState == 'stop'){
+                return;
+            }
+            this.runnerState = 'stop';
+            this.runner.gotoAndPlay("stop", -1);
         }
 
     }

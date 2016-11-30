@@ -24,4 +24,3 @@ var material;
     material.CtrlLever = CtrlLever;
     egret.registerClass(CtrlLever,'material.CtrlLever');
 })(material || (material = {}));
-//# sourceMappingURL=CtrlLever.js.map
