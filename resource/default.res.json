@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,egret_icon_png,description_json,big-fire_png,bomb_png,fire_png,map_png,mine_png",
+			"keys": "bg_jpg,egret_icon_png,description_json,big-fire_png,bomb_png,fire_png,map_png,mine_png,runner_json,runner_png,cat_png,cat_json",
 			"name": "preload"
 		}
 	],
@@ -45,6 +45,27 @@
 			"name": "mine_png",
 			"type": "image",
 			"url": "assets/mine.png"
+		},
+		{
+			"name": "runner_json",
+			"type": "sheet",
+			"url": "assets/runner/runner.json",
+			"subkeys": "run1,run2,run3,run4"
+		},
+		{
+			"name": "runner_png",
+			"type": "image",
+			"url": "assets/runner/runner.png"
+		},
+		{
+			"name": "cat_png",
+			"type": "image",
+			"url": "assets/cat/cat.png"
+		},
+		{
+			"name": "cat_json",
+			"type": "json",
+			"url": "assets/cat/cat.json"
 		}
 	]
 }

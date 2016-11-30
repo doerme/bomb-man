@@ -23,3 +23,4 @@ var material;
     material.BgMap = BgMap;
     egret.registerClass(BgMap,'material.BgMap');
 })(material || (material = {}));
+//# sourceMappingURL=BgMap.js.map

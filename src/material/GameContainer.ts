@@ -19,7 +19,7 @@ module material
         private ctrlLever: material.CtrlLever;
 
         /**阴影[] */
-        private shadow: material.Shadow[] = [];
+        private shadows: material.Shadow[] = [];
 
         private _ctrlGuide:egret.Shape;                   //操控杆对象
         private _touchStatus:boolean = false;             //当前触摸状态，按下时，值为true
@@ -70,8 +70,11 @@ module material
             this.addChild(this._ctrlGuide);
             //猪脚
             this.pumpkin = new material.Pumpkin();
+
             this.addChild(this.pumpkin);
-            this.addChild(this.pumpkin.shadow);
+            
+            //猪脚阴影
+            
         }
 
         /**
@@ -142,21 +145,25 @@ module material
                 if(rsX > roundX && rsY < roundY){
                     this.pumpkin.speedX = this.pumpkin.speed * (rsX - roundX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunRight();
                 }
                 /*第二象限*/
                 if(rsX < roundX && rsY < roundY){
                     this.pumpkin.speedX = -this.pumpkin.speed * (roundX - rsX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunLeft();
                 }
                 /*第三象限*/
                 if(rsX < roundX && rsY > roundY){
                     this.pumpkin.speedX = -this.pumpkin.speed * (roundX - rsX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunLeft();
                 }
                 /*第四象限*/
                 if(rsX > roundX && rsY > roundY){
                     this.pumpkin.speedX = this.pumpkin.speed * (rsX - roundX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunRight();
                 }
             }
         }
@@ -181,48 +188,48 @@ module material
 
         /**画南瓜 */
         private drawPumpkin(timeStamp):void{
-            if(timeStamp > 999){
+            if(timeStamp > 100){
                 return;
             }
         	var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
-                var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
+            var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
 
-                this.pumpkin.x = this.pumpkin.x + _tmp_dx;
-                this.pumpkin.y = this.pumpkin.y + _tmp_dy;
+            this.pumpkin.x = this.pumpkin.x + _tmp_dx;
+            this.pumpkin.y = this.pumpkin.y + _tmp_dy;
 
-                console.log(this.pumpkin.x, this.pumpkin.y);
+            console.log(this.pumpkin.x, this.pumpkin.y);
 
-                /*防撞墙*/
-                if(this.pumpkin.x < this.pumpkin.width/2 - this.stageW/2){
-                	this.pumpkin.x = this.pumpkin.width/2 - this.stageW/2;
-                }
+            /*防撞墙*/
+            if(this.pumpkin.x < this.pumpkin.width/2 - this.stageW/2){
+                this.pumpkin.x = this.pumpkin.width/2 - this.stageW/2;
+            }
 
-                if(this.pumpkin.y < this.pumpkin.height/2 - this.stageW/2){
-                	this.pumpkin.y = this.pumpkin.height/2 - this.stageW/2;
-                }
+            if(this.pumpkin.y < this.pumpkin.height/2 - this.stageW/2){
+                this.pumpkin.y = this.pumpkin.height/2 - this.stageW/2;
+            }
 
-                if(this.pumpkin.x > this.stageW/2 - this.pumpkin.width/2){
-                	this.pumpkin.x = this.stageW/2 - this.pumpkin.width/2;
-                }
+            if(this.pumpkin.x > this.stageW/2 - this.pumpkin.width/2){
+                this.pumpkin.x = this.stageW/2 - this.pumpkin.width/2;
+            }
 
-                if(this.pumpkin.y > this.stageW/2 - this.pumpkin.height/2){
-                	this.pumpkin.y = this.stageW/2 - this.pumpkin.height/2;
-                }
+            if(this.pumpkin.y > this.stageW/2 - this.pumpkin.height/2){
+                this.pumpkin.y = this.stageW/2 - this.pumpkin.height/2;
+            }
 
-                /*防撞墙end*/
-                
-                this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
-                
+            /*防撞墙end*/
+            
+            this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
+            
 
-                // if(this.pumpkin.speedX != 0 || this.pumpkin.speedY != 0){
-                // 	if(parseInt(this.pumpkin.walked) % 50 > 25){
-                // 		this.pumpkin.yoffset = 0;
-                // 	}else{
-                // 		this.pumpkin.yoffset = 10;
-                // 	}
-                // }else{
-                // 	this.pumpkin.yoffset = 10;
-                // }
+            // if(this.pumpkin.speedX != 0 || this.pumpkin.speedY != 0){
+            // 	if(parseInt(this.pumpkin.walked) % 50 > 25){
+            // 		this.pumpkin.yoffset = 0;
+            // 	}else{
+            // 		this.pumpkin.yoffset = 10;
+            // 	}
+            // }else{
+            // 	this.pumpkin.yoffset = 10;
+            // }
         }
 
     }

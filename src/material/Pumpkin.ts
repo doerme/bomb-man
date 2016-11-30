@@ -29,6 +29,8 @@ module material
         /**y方向偏移量 */
         public offsetY:number;
 
+        private runner:egret.MovieClip;
+
 
         public constructor() {
             super();
@@ -39,15 +41,27 @@ module material
             this.removeEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
             this.stageW = this.stage.stageWidth;
             this.stageH = this.stage.stageHeight;
-            this.speed = 1;
-            var img:egret.Bitmap = new egret.Bitmap();
-            img.texture = RES.getRes("mine_png");
-            img.width = 120;
-            img.height = 120;
-            img.x = this.stageW/2 - img.width / 2;
-            img.y = this.stageW/2 - img.height / 2;
-            this.addChild(img);
-
+            this.speed = 2;
+            var data = RES.getRes("cat_json");
+            var txtr = RES.getRes("cat_png");
+            var mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
+            this.runner = new egret.MovieClip( mcFactory.generateMovieClipData( "cat" ) );
+            this.setRunLeft();
+            this.addChild(this.runner);
+            this.runner.play(-1);
         }
+
+        public setRunRight(){
+            this.runner.x = this.stageW/2 - this.runner.width/2;
+            this.runner.y = this.stageW/2 - this.runner.height/2;
+            this.runner.scaleX = 1;
+        }
+
+        public setRunLeft(){
+            this.runner.x = this.stageW/2 + this.runner.width/2;
+            this.runner.y = this.stageW/2 - this.runner.height/2;
+            this.runner.scaleX = -1;
+        }
+
     }
 }

@@ -22,3 +22,4 @@ var material;
     material.GameWrap = GameWrap;
     egret.registerClass(GameWrap,'material.GameWrap');
 })(material || (material = {}));
+//# sourceMappingURL=GameWrap.js.map

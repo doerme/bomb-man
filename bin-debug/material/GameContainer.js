@@ -8,7 +8,7 @@ var material;
         function GameContainer() {
             _super.call(this);
             /**阴影[] */
-            this.shadow = [];
+            this.shadows = [];
             this._touchStatus = false; //当前触摸状态，按下时，值为true
             this._lastTime = egret.getTimer();
             this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -52,7 +52,7 @@ var material;
             //猪脚
             this.pumpkin = new material.Pumpkin();
             this.addChild(this.pumpkin);
-            this.addChild(this.pumpkin.shadow);
+            //猪脚阴影
         };
         /**
          * 游戏操控
@@ -117,21 +117,25 @@ var material;
                 if (rsX > roundX && rsY < roundY) {
                     this.pumpkin.speedX = this.pumpkin.speed * (rsX - roundX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunRight();
                 }
                 /*第二象限*/
                 if (rsX < roundX && rsY < roundY) {
                     this.pumpkin.speedX = -this.pumpkin.speed * (roundX - rsX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunLeft();
                 }
                 /*第三象限*/
                 if (rsX < roundX && rsY > roundY) {
                     this.pumpkin.speedX = -this.pumpkin.speed * (roundX - rsX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunLeft();
                 }
                 /*第四象限*/
                 if (rsX > roundX && rsY > roundY) {
                     this.pumpkin.speedX = this.pumpkin.speed * (rsX - roundX) * 100 / distance;
                     this.pumpkin.speedY = this.pumpkin.speed * (rsY - roundY) * 100 / distance;
+                    this.pumpkin.setRunRight();
                 }
             }
         };
@@ -152,7 +156,7 @@ var material;
         };
         /**画南瓜 */
         p.drawPumpkin = function (timeStamp) {
-            if (timeStamp > 999) {
+            if (timeStamp > 100) {
                 return;
             }
             var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
@@ -190,3 +194,4 @@ var material;
     material.GameContainer = GameContainer;
     egret.registerClass(GameContainer,'material.GameContainer');
 })(material || (material = {}));
+//# sourceMappingURL=GameContainer.js.map
