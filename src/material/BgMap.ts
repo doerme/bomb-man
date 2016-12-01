@@ -17,10 +17,11 @@ module material
             this.stageW = this.stage.stageWidth;
             this.stageH = this.stage.stageHeight;
             var img:egret.Bitmap = new egret.Bitmap();
-            img.texture = RES.getRes("map_png");
+            img.texture = RES.getRes("map_2_jpg");
             img.fillMode = egret.BitmapFillMode.REPEAT;
             img.width = this.stageW;
             img.height = this.stageW;
+            img.alpha = 0.4;
             this.addChild(img);
         }
     }

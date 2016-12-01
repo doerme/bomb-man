@@ -7,8 +7,9 @@ var material;
         __extends(GameContainer, _super);
         function GameContainer() {
             _super.call(this);
-            /**阴影[] */
-            this.shadows = [];
+            /**炸弹[] */
+            this.bombResource = [];
+            this._gameStart = false; //判断游戏是否已经开始  
             this._touchStatus = false; //当前触摸状态，按下时，值为true
             this._lastTime = egret.getTimer();
             this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -51,6 +52,8 @@ var material;
             this.addChild(this._ctrlGuide);
             //猪脚
             this.pumpkin = new material.Pumpkin();
+            this.pumpkin.x = this.stageW / 2;
+            this.pumpkin.y = this.stageW / 2;
             this.addChild(this.pumpkin);
             //猪脚阴影
         };
@@ -142,7 +145,12 @@ var material;
         };
         /**游戏开始*/
         p.gameStart = function () {
+            if (this._gameStart) {
+                return;
+            }
+            this._gameStart = true;
             this.addEventListener(egret.Event.ENTER_FRAME, this.gameViewUpdate, this);
+            this.sessionStart();
         };
         /**游戏画面更新*/
         p.gameViewUpdate = function (evt) {
@@ -154,6 +162,29 @@ var material;
             var speedOffset = 60 / fps;
             //console.log(this._lastTime, timeStamp);
             this.drawPumpkin(timeStamp);
+            //碰撞检测
+            this.gameHitTest();
+        };
+        /**关数控制 */
+        p.sessionStart = function () {
+            console.log('sessionStart');
+            var timer = new egret.Timer(1000, 1);
+            //创建炸弹
+            timer.addEventListener(egret.TimerEvent.TIMER, this.createBomb, this);
+            //timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE,this.createBomb,this);
+            timer.start();
+        };
+        /**创建炸弹 */
+        p.createBomb = function () {
+            var bomb;
+            bomb = material.Bomb.produce("bomb_png");
+            bomb.width = 60;
+            bomb.height = 60;
+            bomb.x = bomb.width + Math.random() * (this.stageW - 2 * bomb.width);
+            bomb.y = bomb.width + Math.random() * (this.stageW - 2 * bomb.width);
+            this.addChild(bomb);
+            this.bombResource.push(bomb);
+            console.log('add bomb ', bomb);
         };
         /**画南瓜 */
         p.drawPumpkin = function (timeStamp) {
@@ -164,31 +195,34 @@ var material;
             var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
             this.pumpkin.x = this.pumpkin.x + _tmp_dx;
             this.pumpkin.y = this.pumpkin.y + _tmp_dy;
-            console.log(this.pumpkin.x, this.pumpkin.y);
+            //console.log(this.pumpkin.x, this.pumpkin.y);
             /*防撞墙*/
-            if (this.pumpkin.x < this.pumpkin.width / 2 - this.stageW / 2) {
-                this.pumpkin.x = this.pumpkin.width / 2 - this.stageW / 2;
+            if (this.pumpkin.x < this.pumpkin.width / 2) {
+                this.pumpkin.x = this.pumpkin.width / 2;
             }
-            if (this.pumpkin.y < this.pumpkin.height / 2 - this.stageW / 2) {
-                this.pumpkin.y = this.pumpkin.height / 2 - this.stageW / 2;
+            if (this.pumpkin.x > this.stageW - this.pumpkin.width / 2) {
+                this.pumpkin.x = this.stageW - this.pumpkin.width / 2;
             }
-            if (this.pumpkin.x > this.stageW / 2 - this.pumpkin.width / 2) {
-                this.pumpkin.x = this.stageW / 2 - this.pumpkin.width / 2;
+            if (this.pumpkin.y < this.pumpkin.height / 2) {
+                this.pumpkin.y = this.pumpkin.height / 2;
             }
-            if (this.pumpkin.y > this.stageW / 2 - this.pumpkin.height / 2) {
-                this.pumpkin.y = this.stageW / 2 - this.pumpkin.height / 2;
+            if (this.pumpkin.y > this.stageW - this.pumpkin.height / 2) {
+                this.pumpkin.y = this.stageW - this.pumpkin.height / 2;
             }
             /*防撞墙end*/
             this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
-            // if(this.pumpkin.speedX != 0 || this.pumpkin.speedY != 0){
-            // 	if(parseInt(this.pumpkin.walked) % 50 > 25){
-            // 		this.pumpkin.yoffset = 0;
-            // 	}else{
-            // 		this.pumpkin.yoffset = 10;
-            // 	}
-            // }else{
-            // 	this.pumpkin.yoffset = 10;
-            // }
+        };
+        /**游戏碰撞检测 */
+        p.gameHitTest = function () {
+            //我拿炸弹
+            for (var n in this.bombResource) {
+                if (material.GameUtil.hitRoundTest(this.bombResource[n], this.pumpkin)) {
+                    console.log('hit');
+                    this.pumpkin.havebomb++;
+                    this.removeChild(this.bombResource[n]);
+                    this.bombResource.splice(parseInt(n), 1);
+                }
+            }
         };
         return GameContainer;
     }(egret.DisplayObjectContainer));

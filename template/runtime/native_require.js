@@ -11,11 +11,13 @@ var game_file_list = [
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
 	"bin-debug/material/BgMap.js",
+	"bin-debug/material/Bomb.js",
 	"bin-debug/material/CtrlLever.js",
 	"bin-debug/material/GameContainer.js",
 	"bin-debug/material/GameWrap.js",
 	"bin-debug/material/Pumpkin.js",
 	"bin-debug/material/Shadow.js",
+	"bin-debug/util/GameUtil.js",
 	//----auto game_file_list end----
 ];
 

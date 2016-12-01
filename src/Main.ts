@@ -118,18 +118,6 @@ class Main extends egret.DisplayObjectContainer {
         var gameContainer:material.GameContainer = new material.GameContainer();
         this.addChild(gameContainer);
     }
-
-    /**
-     * 游戏背景
-     */
-    private createGameBackground(){
-        var img:egret.Bitmap = new egret.Bitmap();
-        img.texture = RES.getRes("map_png");
-        img.fillMode = egret.BitmapFillMode.REPEAT;
-        img.width = 750;
-        img.height = 750;
-        this.addChild(img);
-    }
     
 }
 

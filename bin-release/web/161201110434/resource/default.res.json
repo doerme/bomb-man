@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,egret_icon_png,description_json,big-fire_png,bomb_png,fire_png,map_png,mine_png,runner_json,runner_png,cat_png,cat_json,map_1_png,map_2_jpg,map_3_png,map_4_jpg,map_5_jpg",
+			"keys": "bg_jpg,egret_icon_png,description_json,big-fire_png,bomb_png,fire_png,map_png,mine_png,runner_json,runner_png,cat_png,cat_json",
 			"name": "preload"
 		}
 	],
@@ -66,31 +66,6 @@
 			"name": "cat_json",
 			"type": "json",
 			"url": "assets/cat/cat.json"
-		},
-		{
-			"name": "map_1_png",
-			"type": "image",
-			"url": "assets/map_1.png"
-		},
-		{
-			"name": "map_2_jpg",
-			"type": "image",
-			"url": "assets/map_2.jpg"
-		},
-		{
-			"name": "map_3_png",
-			"type": "image",
-			"url": "assets/map_3.png"
-		},
-		{
-			"name": "map_4_jpg",
-			"type": "image",
-			"url": "assets/map_4.jpg"
-		},
-		{
-			"name": "map_5_jpg",
-			"type": "image",
-			"url": "assets/map_5.jpg"
 		}
 	]
 }

@@ -47,8 +47,8 @@ module material
             var txtr = RES.getRes("cat_png");
             var mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
             this.runner = new egret.MovieClip( mcFactory.generateMovieClipData( "cat" ) );
-            this.runner.x = this.stageW/2 - this.runner.width/2;
-            this.runner.y = this.stageW/2 - this.runner.height/2;
+            this.runner.x =  - this.runner.width/2;
+            this.runner.y =  - this.runner.height/2;
             this.seStop();
             this.addChild(this.runner);
         }
@@ -58,8 +58,8 @@ module material
                 return;
             }
             this.runnerState = 'right';
-            this.runner.x = this.stageW/2 - this.runner.width/2;
-            this.runner.y = this.stageW/2 - this.runner.height/2;
+            this.runner.x =  - this.runner.width/2;
+            this.runner.y =  - this.runner.height/2;
             this.runner.scaleX = 1;
             this.runner.gotoAndPlay("run", -1);
         }
@@ -69,8 +69,8 @@ module material
                 return;
             }
             this.runnerState = 'left';
-            this.runner.x = this.stageW/2 + this.runner.width/2;
-            this.runner.y = this.stageW/2 - this.runner.height/2;
+            this.runner.x =  + this.runner.width/2;
+            this.runner.y =  - this.runner.height/2;
             this.runner.scaleX = -1;
             this.runner.gotoAndPlay("run", -1);
         }

@@ -104,17 +104,6 @@ var Main = (function (_super) {
         var gameContainer = new material.GameContainer();
         this.addChild(gameContainer);
     };
-    /**
-     * 游戏背景
-     */
-    p.createGameBackground = function () {
-        var img = new egret.Bitmap();
-        img.texture = RES.getRes("map_png");
-        img.fillMode = egret.BitmapFillMode.REPEAT;
-        img.width = 750;
-        img.height = 750;
-        this.addChild(img);
-    };
     return Main;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Main,'Main');
