@@ -32,6 +32,9 @@ var material;
             }
             else {
                 this.showCtrlBomb();
+                var tmpX = this.ctrlBomb.x;
+                var tmpY = this.ctrlBomb.y;
+                egret.Tween.get(this.ctrlBomb).to({ scaleX: .8, scaleY: .8, x: tmpX + 20, y: tmpY + 20 }, 500, egret.Ease.circIn).to({ scaleX: 1, scaleY: 1, x: tmpX, y: tmpY }, 500, egret.Ease.circIn);
             }
         };
         return CtrlBomb;
