@@ -4,6 +4,8 @@ var material;
         __extends(Pumpkin, _super);
         function Pumpkin() {
             _super.call(this);
+            /**拥有炸弹数 */
+            this.havebomb = 0;
             this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
         }
         var d = __define,c=Pumpkin,p=c.prototype;

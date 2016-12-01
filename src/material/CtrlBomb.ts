@@ -8,6 +8,8 @@ module material
         private stageH:number;
         /**控杆 */
         private ctrlBomb:egret.Bitmap;
+        /**数量文本 */
+        private label:egret.TextField;
 
         public constructor() {
             super();
@@ -26,6 +28,13 @@ module material
             this.ctrlBomb.height = 200;
             this.ctrlBomb.alpha = 0;
             this.addChild(this.ctrlBomb);
+
+            this.label = new egret.TextField();
+            this.label.textColor = 0xff0000;
+            this.label.width = 70;
+            this.label.height = 70;
+            this.label.size = 50;
+            this.addChild(this.label);
         }
 
         private showCtrlBomb():void{
@@ -37,12 +46,16 @@ module material
         }
 
         public setCtrlBomb(num:number){
+            console.log('setCtrlBomb', num);
             if(num <= 0){
                 this.hideCtrlBomb();
             }else{
                 this.showCtrlBomb();
-                var tmpX = this.ctrlBomb.x;
-                var tmpY = this.ctrlBomb.y;
+                var tmpX = this.stageW - 250;
+                var tmpY = this.stageW + 100;
+                this.label.x = tmpX;
+                this.label.y = tmpY;
+                this.label.text = num.toString();
                 egret.Tween.get(  this.ctrlBomb ).to( 
                     { scaleX:.8, scaleY:.8, x: tmpX + 20, y: tmpY + 20 }, 500, egret.Ease.circIn ).to( 
                         { scaleX:1, scaleY:1, x: tmpX, y: tmpY }, 500, egret.Ease.circIn );

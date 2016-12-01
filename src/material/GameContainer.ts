@@ -266,8 +266,8 @@ module material
             //我拿炸弹
             for(var n in this.bombResource) {
                 if(material.GameUtil.hitRoundTest(this.bombResource[n],this.pumpkin)) {
-                    console.log('hit');
                     this.pumpkin.havebomb ++;
+                    console.log('hit', this.pumpkin.havebomb);
                     this.ctrlBomb.setCtrlBomb(this.pumpkin.havebomb);
                     this.removeChild(this.bombResource[n]);
                     this.bombResource.splice(parseInt(n), 1);

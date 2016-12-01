@@ -15,7 +15,7 @@ module material
         /**上一次渲染时间 */
         public lastactiontime:number;
         /**拥有炸弹数 */
-        public havebomb:number;
+        public havebomb:number = 0;
         /**火力 */
         public fireable:number;
         /**杀人数 */
