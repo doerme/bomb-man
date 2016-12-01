@@ -17,6 +17,8 @@ module material
         private pumpkin: material.Pumpkin;
         /**游戏控制杆 */
         private ctrlLever: material.CtrlLever;
+        /**炸弹按钮 */
+        private ctrlBomb: material.CtrlBomb;
 
         /**炸弹[] */
         private bombResource: material.Bomb[] = [];
@@ -50,6 +52,9 @@ module material
             //控制杆
             this.ctrlLever = new material.CtrlLever();
             this.addChild(this.ctrlLever);
+            //炸弹按钮
+            this.ctrlBomb = new material.CtrlBomb();
+            this.addChild(this.ctrlBomb);
             //触碰事件绑定
             this.ctrlLever.touchEnabled = true;
             this.ctrlLever.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchStart, this);
@@ -199,7 +204,7 @@ module material
         /**关数控制 */
         private sessionStart():void{
             console.log('sessionStart');
-            var timer:egret.Timer = new egret.Timer(1000,1);
+            var timer:egret.Timer = new egret.Timer(1000, 3);
             //创建炸弹
             timer.addEventListener(egret.TimerEvent.TIMER,this.createBomb,this);
             //timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE,this.createBomb,this);
@@ -222,7 +227,7 @@ module material
 
         /**画南瓜 */
         private drawPumpkin(timeStamp):void{
-            if(timeStamp > 100){
+            if(timeStamp > 50){
                 return;
             }
         	var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
@@ -263,6 +268,7 @@ module material
                 if(material.GameUtil.hitRoundTest(this.bombResource[n],this.pumpkin)) {
                     console.log('hit');
                     this.pumpkin.havebomb ++;
+                    this.ctrlBomb.setCtrlBomb(this.pumpkin.havebomb);
                     this.removeChild(this.bombResource[n]);
                     this.bombResource.splice(parseInt(n), 1);
                 }

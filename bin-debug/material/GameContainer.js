@@ -32,6 +32,9 @@ var material;
             //控制杆
             this.ctrlLever = new material.CtrlLever();
             this.addChild(this.ctrlLever);
+            //炸弹按钮
+            this.ctrlBomb = new material.CtrlBomb();
+            this.addChild(this.ctrlBomb);
             //触碰事件绑定
             this.ctrlLever.touchEnabled = true;
             this.ctrlLever.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.touchStart, this);
@@ -168,7 +171,7 @@ var material;
         /**关数控制 */
         p.sessionStart = function () {
             console.log('sessionStart');
-            var timer = new egret.Timer(1000, 1);
+            var timer = new egret.Timer(1000, 3);
             //创建炸弹
             timer.addEventListener(egret.TimerEvent.TIMER, this.createBomb, this);
             //timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE,this.createBomb,this);
@@ -188,7 +191,7 @@ var material;
         };
         /**画南瓜 */
         p.drawPumpkin = function (timeStamp) {
-            if (timeStamp > 100) {
+            if (timeStamp > 50) {
                 return;
             }
             var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
@@ -219,6 +222,7 @@ var material;
                 if (material.GameUtil.hitRoundTest(this.bombResource[n], this.pumpkin)) {
                     console.log('hit');
                     this.pumpkin.havebomb++;
+                    this.ctrlBomb.setCtrlBomb(this.pumpkin.havebomb);
                     this.removeChild(this.bombResource[n]);
                     this.bombResource.splice(parseInt(n), 1);
                 }

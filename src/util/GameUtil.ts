@@ -23,8 +23,8 @@ module material
             var _tmp_dx = obj1.x - obj2.x;
             var _tmp_dy = obj1.y - obj2.y;
             var distance = Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
-            console.log(distance);
-            if (distance <  obj1.width + obj2.width) {
+            //console.log(distance);
+            if (distance <  (obj1.width + obj2.width)/2) {
                 return true;
             }else{
                 return false;

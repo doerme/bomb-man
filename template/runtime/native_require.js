@@ -12,6 +12,7 @@ var game_file_list = [
 	"bin-debug/Main.js",
 	"bin-debug/material/BgMap.js",
 	"bin-debug/material/Bomb.js",
+	"bin-debug/material/CtrlBomb.js",
 	"bin-debug/material/CtrlLever.js",
 	"bin-debug/material/GameContainer.js",
 	"bin-debug/material/GameWrap.js",
