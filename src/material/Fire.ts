@@ -7,6 +7,11 @@ module material
         /**stage高*/
         private stageH:number;
 
+        public xCache:number;
+        public yCache:number;
+        public setTime:number;
+        public lastTime:number;
+
         public constructor() {
             super();
             this.addEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
@@ -23,8 +28,8 @@ module material
             this.curFire.texture = RES.getRes("big-fire_png");
             this.curFire.x = 0;
             this.curFire.y = 0;
-            this.curFire.width = 100;
-            this.curFire.height = 100;
+            this.curFire.width = 60;
+            this.curFire.height = 60;
             this.addChild(this.curFire);
         }
 

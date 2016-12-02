@@ -211,6 +211,7 @@ module material
 
             //炸弹火花
             this.fireFloweMove();
+            this.fireMove();
 
             //炸弹爆炸
             this.bombExplode(nowTime);
@@ -222,7 +223,7 @@ module material
         /**关数控制 */
         private sessionStart():void{
             console.log('sessionStart');
-            var timer:egret.Timer = new egret.Timer(1000, 3);
+            var timer:egret.Timer = new egret.Timer(1500, 30);
             //创建炸弹
             timer.addEventListener(egret.TimerEvent.TIMER,this.createBomb,this);
             //timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE,this.createBomb,this);
@@ -291,6 +292,14 @@ module material
             }
         }
 
+        /**爆炸火焰抖动 */
+        private fireMove():void{
+            for(var n in this.fireResource){
+                this.fireResource[n].x = this.fireResource[n].xCache  - 5 + (Math.random()*10);
+                this.fireResource[n].y = this.fireResource[n].yCache  - 5 + (Math.random()*10);
+            }
+        }
+
         /**炸弹爆炸 */
         private bombExplode(nowtime:number):void{
             for(var n in this.throwBombResource){
@@ -301,6 +310,8 @@ module material
                     this.restTimelabelResource[n].setText(Math.floor(tmpTime/10).toString());
                 }else{
                     console.log('explode');
+                    this.fireExplode(nowtime, this.throwBombResource[n]);
+
                     material.Bomb.reclaim(this.throwBombResource[n]);
                     this.removeChild(this.throwBombResource[n]);
                     this.throwBombResource.splice(parseInt(n), 1);
@@ -316,7 +327,65 @@ module material
         }
 
         /**爆炸火焰 */
-        private fireExplode(nowtime:number):void{
+        private fireExplode(nowtime:number, bombObj:material.Bomb):void{
+            var tmpFire = new material.Fire;
+            var tmpOffset = 60;
+            tmpFire.setTime = egret.getTimer();
+            tmpFire.lastTime = 1000;
+            tmpFire.xCache = bombObj.x;
+            tmpFire.x = bombObj.x;
+            tmpFire.yCache = bombObj.y;
+            tmpFire.y = bombObj.y;
+            this.addChild(tmpFire);
+            this.fireResource.push(tmpFire);
+
+            for(var n = 0; n < this.pumpkin.fireable; n++){
+                //left
+                var tmpFire = new material.Fire;
+                var tmpOffset = 50;
+                tmpFire.setTime = egret.getTimer();
+                tmpFire.lastTime = 1000;
+                tmpFire.xCache = bombObj.x - (n + 1)*tmpOffset;
+                tmpFire.x = bombObj.x - (n + 1)*tmpOffset;
+                tmpFire.yCache = bombObj.y;
+                tmpFire.y = bombObj.y;
+                this.addChild(tmpFire);
+                this.fireResource.push(tmpFire);
+                //right
+                var tmpFire = new material.Fire;
+                var tmpOffset = 60;
+                tmpFire.setTime = egret.getTimer();
+                tmpFire.lastTime = 1000;
+                tmpFire.xCache = bombObj.x + (n + 1)*tmpOffset;
+                tmpFire.x = bombObj.x + (n + 1)*tmpOffset;
+                tmpFire.yCache = bombObj.y;
+                tmpFire.y = bombObj.y;
+                this.addChild(tmpFire);
+                this.fireResource.push(tmpFire);
+                //top
+                var tmpFire = new material.Fire;
+                var tmpOffset = 60;
+                tmpFire.setTime = egret.getTimer();
+                tmpFire.lastTime = 1000;
+                tmpFire.xCache = bombObj.x;
+                tmpFire.x = bombObj.x;
+                tmpFire.yCache = bombObj.y - (n + 1)*tmpOffset;
+                tmpFire.y = bombObj.y - (n + 1)*tmpOffset;
+                this.addChild(tmpFire);
+                this.fireResource.push(tmpFire);
+                //bottom
+                var tmpFire = new material.Fire;
+                var tmpOffset = 60;
+                tmpFire.setTime = egret.getTimer();
+                tmpFire.lastTime = 1000;
+                tmpFire.xCache = bombObj.x;
+                tmpFire.x = bombObj.x;
+                tmpFire.yCache = bombObj.y + (n + 1)*tmpOffset;
+                tmpFire.y = bombObj.y + (n + 1)*tmpOffset;
+                this.addChild(tmpFire);
+                this.fireResource.push(tmpFire);
+            }
+
 
         }
 
