@@ -338,36 +338,40 @@ var material;
         };
         /**画南瓜 */
         p.drawPumpkin = function (timeStamp) {
-            if (timeStamp < 60) {
-                var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
-                var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
-                this.pumpkin.x = this.pumpkin.x + _tmp_dx;
-                this.pumpkin.y = this.pumpkin.y + _tmp_dy;
-                //console.log(this.pumpkin.x, this.pumpkin.y);
-                /*防撞墙*/
-                if (this.pumpkin.x < this.pumpkin.width) {
-                    console.log('fzq 1');
-                    this.pumpkin.x = this.pumpkin.width;
-                }
-                if (this.pumpkin.x > this.stageW - this.pumpkin.width) {
-                    console.log('fzq 2');
-                    this.pumpkin.x = this.stageW - this.pumpkin.width;
-                }
-                if (this.pumpkin.y < this.pumpkin.height) {
-                    console.log('fzq 3');
-                    this.pumpkin.y = this.pumpkin.height;
-                }
-                if (this.pumpkin.y > this.stageW - this.pumpkin.height) {
-                    console.log('fzq 4');
-                    this.pumpkin.y = this.stageW - this.pumpkin.height;
-                }
-                /*防撞墙end*/
-                this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
+            //console.log('in', timeStamp, this.pumpkin.x, this.pumpkin.y, this.pumpkin.speedX, this.pumpkin.speedY);
+            if (timeStamp > 60) {
+                timeStamp = 60;
             }
-            else {
-                this.pumpkin.x = this.stageW / 2;
-                this.pumpkin.y = this.stageW / 2;
+            if (!this.pumpkin.speedX) {
+                return;
             }
+            if (!this.pumpkin.speedY) {
+                return;
+            }
+            var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
+            var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
+            this.pumpkin.x = this.pumpkin.x + _tmp_dx;
+            this.pumpkin.y = this.pumpkin.y + _tmp_dy;
+            //console.log(this.pumpkin.x, this.pumpkin.y);
+            /*防撞墙*/
+            if (this.pumpkin.x < this.pumpkin.width) {
+                console.log('fzq 1', timeStamp, this.pumpkin.x, this.pumpkin.y);
+                this.pumpkin.x = this.pumpkin.width;
+            }
+            if (this.pumpkin.x > this.stageW - this.pumpkin.width) {
+                console.log('fzq 2', timeStamp, this.pumpkin.x, this.pumpkin.y);
+                this.pumpkin.x = this.stageW - this.pumpkin.width;
+            }
+            if (this.pumpkin.y < this.pumpkin.height) {
+                console.log('fzq 3', timeStamp, this.pumpkin.x, this.pumpkin.y);
+                this.pumpkin.y = this.pumpkin.height;
+            }
+            if (this.pumpkin.y > this.stageW - this.pumpkin.height) {
+                console.log('fzq 4', timeStamp, this.pumpkin.x, this.pumpkin.y);
+                this.pumpkin.y = this.stageW - this.pumpkin.height;
+            }
+            /*防撞墙end*/
+            this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
         };
         /**游戏碰撞检测 */
         p.gameHitTest = function () {
