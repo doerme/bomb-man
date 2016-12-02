@@ -391,37 +391,43 @@ module material
 
         /**画南瓜 */
         private drawPumpkin(timeStamp):void{
-            if(timeStamp > 50){
-                return;
+            if(timeStamp < 60){
+                var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
+                var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
+
+                this.pumpkin.x = this.pumpkin.x + _tmp_dx;
+                this.pumpkin.y = this.pumpkin.y + _tmp_dy;
+
+                //console.log(this.pumpkin.x, this.pumpkin.y);
+
+                /*防撞墙*/
+                if(this.pumpkin.x < this.pumpkin.width){
+                    console.log('fzq 1');
+                    this.pumpkin.x = this.pumpkin.width;
+                }
+
+                if(this.pumpkin.x > this.stageW - this.pumpkin.width){
+                    console.log('fzq 2');
+                    this.pumpkin.x = this.stageW - this.pumpkin.width;
+                }
+
+                if(this.pumpkin.y < this.pumpkin.height){
+                    console.log('fzq 3');
+                    this.pumpkin.y = this.pumpkin.height;
+                }
+
+                if(this.pumpkin.y > this.stageW - this.pumpkin.height){
+                    console.log('fzq 4');
+                    this.pumpkin.y = this.stageW - this.pumpkin.height;
+                }
+
+                /*防撞墙end*/
+                
+                this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
+            }else{
+                this.pumpkin.x = this.stageW / 2;
+                this.pumpkin.y = this.stageW / 2;
             }
-        	var _tmp_dx = this.pumpkin.speedX * (timeStamp) / 1000;
-            var _tmp_dy = this.pumpkin.speedY * (timeStamp) / 1000;
-
-            this.pumpkin.x = this.pumpkin.x + _tmp_dx;
-            this.pumpkin.y = this.pumpkin.y + _tmp_dy;
-
-            //console.log(this.pumpkin.x, this.pumpkin.y);
-
-            /*防撞墙*/
-            if(this.pumpkin.x < this.pumpkin.width/2){
-                this.pumpkin.x = this.pumpkin.width/2;
-            }
-
-            if(this.pumpkin.x > this.stageW - this.pumpkin.width/2){
-                this.pumpkin.x = this.stageW - this.pumpkin.width/2;
-            }
-
-            if(this.pumpkin.y < this.pumpkin.height/2){
-                this.pumpkin.y = this.pumpkin.height/2;
-            }
-
-            if(this.pumpkin.y > this.stageW - this.pumpkin.height/2){
-                this.pumpkin.y = this.stageW - this.pumpkin.height/2;
-            }
-
-            /*防撞墙end*/
-            
-            this.pumpkin.walked += Math.sqrt((_tmp_dx * _tmp_dx) + (_tmp_dy * _tmp_dy));
             
         }
 
@@ -430,7 +436,7 @@ module material
             //我拿炸弹
             for(var n in this.bombResource) {
                 if(material.GameUtil.hitRoundTest(this.bombResource[n],this.pumpkin)) {
-                    this.pumpkin.havebomb ++;
+                    this.pumpkin.havebomb += 10;
                     console.log('hit', this.pumpkin.havebomb);
                     this.ctrlBomb.setCtrlBomb(this.pumpkin.havebomb);
                     material.Bomb.reclaim(this.bombResource[n]);
