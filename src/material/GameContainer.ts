@@ -22,6 +22,15 @@ module material
 
         /**炸弹[] */
         private bombResource: material.Bomb[] = [];
+        /**放出的炸弹[] */
+        private throwBombResource: material.Bomb[] = [];
+        /**火花[] */
+        private fireFlowerResource: material.Bomb[] = [];
+        /**倒计时文本[] */
+        private restTimelabelResource: material.GameLabel[] = [];
+        /**爆炸火焰[] */
+        private fireResource: material.Fire[] = [];
+
         private _gameStart:boolean = false;               //判断游戏是否已经开始  
         private _ctrlGuide:egret.Shape;                   //操控杆对象
         private _touchStatus:boolean = false;             //当前触摸状态，按下时，值为true
@@ -64,6 +73,9 @@ module material
             this.gameWrap.touchEnabled = true;
             this.gameWrap.addEventListener(egret.TouchEvent.TOUCH_END, this.touchEnd, this);
             this.gameWrap.addEventListener(egret.TouchEvent.TOUCH_CANCEL, this.touchEnd, this);
+
+            this.ctrlBomb.$touchEnabled = true;
+            this.ctrlBomb.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.throwBomb, this);
             //控制杆心
             this._ctrlGuide = new egret.Shape();
             this._ctrlGuide.x = 150;
@@ -196,6 +208,12 @@ module material
             //console.log(this._lastTime, timeStamp);
 
             this.drawPumpkin(timeStamp);
+
+            //炸弹火花
+            this.fireFloweMove();
+
+            //炸弹爆炸
+            this.bombExplode(nowTime);
             
             //碰撞检测
             this.gameHitTest();
@@ -223,6 +241,83 @@ module material
             this.addChild(bomb);
             this.bombResource.push(bomb);
             console.log('add bomb ',bomb);
+        }
+
+        /**放炸弹 */
+        private throwBomb():void{
+            if(this.pumpkin.havebomb <= 0){
+                return;
+            }
+
+            var bomb:material.Bomb;
+            bomb = material.Bomb.produce("bomb_png");
+            bomb.width = 60;
+            bomb.height = 60;
+            bomb.x = this.pumpkin.x - this.pumpkin.width/2;
+            bomb.y = this.pumpkin.y - this.pumpkin.height/2;
+            bomb.setTime = egret.getTimer();
+            bomb.lastTime = 3000;
+            this.addChild(bomb);
+            this.throwBombResource.push(bomb);
+            this.pumpkin.havebomb --;
+            this.ctrlBomb.setCtrlBomb(this.pumpkin.havebomb);
+
+            var fireFlower:material.Bomb;
+            fireFlower = material.Bomb.produce("fire_png");
+            fireFlower.width = 20;
+            fireFlower.height = 20;
+            fireFlower.x = this.pumpkin.x - this.pumpkin.width/2 + 30;
+            fireFlower.y = this.pumpkin.y - this.pumpkin.height/2 - 5;
+            fireFlower.xCache = fireFlower.x;
+            fireFlower.yCache = fireFlower.y;
+            fireFlower.setTime = egret.getTimer();
+            fireFlower.lastTime = bomb.lastTime;
+            this.addChild(fireFlower);
+            this.fireFlowerResource.push(fireFlower);
+
+            var restTimeLabel:material.GameLabel;
+            restTimeLabel = new material.GameLabel(fireFlower.lastTime.toString());
+            restTimeLabel.x = this.pumpkin.x - 20;
+            restTimeLabel.y = this.pumpkin.y - 80;
+            this.addChild(restTimeLabel);
+            this.restTimelabelResource.push(restTimeLabel);
+        }
+
+        /**火花抖动 */
+        private fireFloweMove():void{
+            for(var n in this.fireFlowerResource){
+                this.fireFlowerResource[n].x = this.fireFlowerResource[n].xCache  - 5 + (Math.random()*10);
+                this.fireFlowerResource[n].y = this.fireFlowerResource[n].yCache  - 5 + (Math.random()*10);
+            }
+        }
+
+        /**炸弹爆炸 */
+        private bombExplode(nowtime:number):void{
+            for(var n in this.throwBombResource){
+                //console.log(nowtime, this.throwBombResource[n].setTime);
+                var tmpTime = this.throwBombResource[n].setTime + this.throwBombResource[n].lastTime - nowtime;
+                if(tmpTime > 0){
+                    console.log(tmpTime);
+                    this.restTimelabelResource[n].setText(Math.floor(tmpTime/10).toString());
+                }else{
+                    console.log('explode');
+                    material.Bomb.reclaim(this.throwBombResource[n]);
+                    this.removeChild(this.throwBombResource[n]);
+                    this.throwBombResource.splice(parseInt(n), 1);
+
+                    material.Bomb.reclaim(this.fireFlowerResource[n]);
+                    this.removeChild(this.fireFlowerResource[n]);
+                    this.fireFlowerResource.splice(parseInt(n), 1);
+
+                    this.removeChild(this.restTimelabelResource[n]);
+                    this.restTimelabelResource.splice(parseInt(n), 1);
+                }
+            }
+        }
+
+        /**爆炸火焰 */
+        private fireExplode(nowtime:number):void{
+
         }
 
         /**画南瓜 */
@@ -269,6 +364,7 @@ module material
                     this.pumpkin.havebomb ++;
                     console.log('hit', this.pumpkin.havebomb);
                     this.ctrlBomb.setCtrlBomb(this.pumpkin.havebomb);
+                    material.Bomb.reclaim(this.bombResource[n]);
                     this.removeChild(this.bombResource[n]);
                     this.bombResource.splice(parseInt(n), 1);
                 }

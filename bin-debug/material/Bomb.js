@@ -10,6 +10,8 @@ var material;
         __extends(Bomb, _super);
         function Bomb(texture, textureName) {
             _super.call(this, texture);
+            this.xCache = 0;
+            this.yCache = 0;
             this.textureName = textureName;
         }
         var d = __define,c=Bomb,p=c.prototype;

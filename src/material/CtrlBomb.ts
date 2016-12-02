@@ -39,10 +39,12 @@ module material
 
         private showCtrlBomb():void{
             this.ctrlBomb.alpha = 1;
+            this.label.alpha = 1;
         }
 
         private hideCtrlBomb():void{
             this.ctrlBomb.alpha = 0;
+            this.label.alpha = 0;
         }
 
         public setCtrlBomb(num:number){

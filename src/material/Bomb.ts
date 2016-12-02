@@ -8,6 +8,10 @@ module material
      */
     export class Bomb extends egret.Bitmap
     {
+        public xCache:number = 0;
+        public yCache:number = 0;
+        public setTime:number;
+        public lastTime:number;
         private static cacheDict:Object = {};
         /**生产*/
         public static produce(textureName:string):material.Bomb

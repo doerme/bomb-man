@@ -28,9 +28,11 @@ var material;
         };
         p.showCtrlBomb = function () {
             this.ctrlBomb.alpha = 1;
+            this.label.alpha = 1;
         };
         p.hideCtrlBomb = function () {
             this.ctrlBomb.alpha = 0;
+            this.label.alpha = 0;
         };
         p.setCtrlBomb = function (num) {
             console.log('setCtrlBomb', num);

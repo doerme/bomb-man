@@ -17,7 +17,7 @@ module material
         /**拥有炸弹数 */
         public havebomb:number = 0;
         /**火力 */
-        public fireable:number;
+        public fireable:number = 2;
         /**杀人数 */
         public killed:number;
         /**x坐标 */

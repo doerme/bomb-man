@@ -6,6 +6,8 @@ var material;
             _super.call(this);
             /**拥有炸弹数 */
             this.havebomb = 0;
+            /**火力 */
+            this.fireable = 2;
             this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
         }
         var d = __define,c=Pumpkin,p=c.prototype;
